@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class Calculator {
+public class CalculatorController {
 
     @GetMapping("/add")
     public String add(@RequestParam(name="num1", required=false, defaultValue="0") String num1,
