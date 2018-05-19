@@ -8,7 +8,9 @@ import com.mashape.unirest.request.GetRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class GreetingController {
@@ -25,17 +27,18 @@ public class GreetingController {
         return "greeting";
     }
 
-    @GetMapping("/user")
-    public String user(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-        String body = "Failed";
+    @GetMapping("/webhook")
+    @ResponseBody
+    public String webhook(Model model) {
+        String body = null;
         try {
-            HttpResponse<String> response = Unirest.get("https://amitasviper.com/assets/resp.json").asString();
-            body = response.getBody();
+            HttpResponse<JsonNode> response = Unirest.get("https://amitasviper.com/assets/resp.json").asJson();
+            body = response.getBody().toString();
         } catch (UnirestException e) {
+            System.out.println("Error encountered while downloading the resource from web");
             e.printStackTrace();
         }
-        model.addAttribute("name", body);
-        return "greeting";
+            return body;
     }
 
 }
